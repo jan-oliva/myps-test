@@ -12,7 +12,7 @@ konfigurace src/app/config/config.neon
 
 
 ```
-composer install
+composer install #pokud není stažen z gitu i vendor
 
 
 ** struktura DB pomoci Doctrine console

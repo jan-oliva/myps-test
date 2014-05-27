@@ -1,0 +1,33 @@
+events:
+	optimize: yes
+	validate: yes
+	autowire: no
+
+services:
+	foo:
+		class: KdybyTests\Events\LoremListener
+		tags: [kdyby.subscriber]
+
+	bar:
+		class: KdybyTests\Events\EventListenerMock
+		tags: [kdyby.subscriber]
+
+	baz:
+		class: KdybyTests\Events\NamespacedEventListenerMock
+		tags: [kdyby.subscriber]
+
+	methodAlias:
+		class: KdybyTests\Events\MethodAliasListenerMock
+		tags: [kdyby.subscriber]
+
+	priorityMethod:
+		class: KdybyTests\Events\PriorityMethodAliasListenerMock
+		tags: [kdyby.subscriber]
+
+	higherPriorityMethod:
+		class: KdybyTests\Events\HigherPriorityMethodAliasListenerMock
+		tags: [kdyby.subscriber]
+
+	multipleEventMethods:
+		class: KdybyTests\Events\MultipleEventMethodsListenerMock
+		tags: [kdyby.subscriber]

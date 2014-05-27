@@ -1,0 +1,59 @@
+{
+    "name": "myps_test",
+    "description": "myps test",
+    "version": "1.0.0",
+    "keywords": ["jobs"],
+    "homepage": "http://jan-oliva.cz/",
+    "time": "2013-08-30",
+    "license": "proprietary",
+    "support": {
+        "email": "jan.oliva@jo.gmail.com",
+        "issues": "http://jan-oliva.cz/",
+        "wiki": "http://project.jan-oliva.cz",
+        "source": "http://jan-oliva.cz"
+    },
+    "repositories": [
+
+        {
+            "type": "package",
+            "package": {
+                "name": "google/closure-compiler",
+                "version": "v20130722",
+                "dist": {
+                    "url": "https://closure-compiler.googlecode.com/files/compiler-20130722.zip",
+                    "type": "zip"
+                }
+            }
+        },
+
+        {
+            "type": "vcs",
+            "url": "https://github.com/cbschuld/Browser.php"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-PDO": "*",
+        "ext-pcre": "*",
+        "ext-session": "*",
+        "symfony/yaml": "v2.3.4",
+		"symfony/console": "*",
+        "symfony/filesystem": "*",
+        "cbschuld/browser.php": "dev-master",
+        "nette/nette": "2.1.*@dev",
+		"kdyby/doctrine": "@dev",
+		"kdyby/bootstrap-form-renderer": "dev-master",
+		"o5/grido": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "modules\\": ["app"]
+        }
+    },
+    "config": {
+        "vendor-dir": "src/vendor/"
+    }
+}

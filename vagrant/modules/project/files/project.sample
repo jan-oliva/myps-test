@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+  ServerName project.eshop.dev
+  DocumentRoot /var/www/project/www
+  Options -Indexes +FollowSymLinks
+  ErrorLog /var/www/project/log/system/error.log
+  CustomLog /var/www/project/log/system/access.log combined
+</VirtualHost>

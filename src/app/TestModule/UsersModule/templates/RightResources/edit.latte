@@ -1,0 +1,16 @@
+{block head}
+<script src="{$basePath}/js/netteForms.js"></script>
+<link rel="stylesheet" media="screen" href="{$basePath}/css/form.css" type="text/css" />
+<title n:block="title" >{_}úprva zdroje oprávnění{/_}</title>
+{/block}
+{block content}
+
+<div class="container">
+	{control usersTabs}
+	{control rightResourceForm}
+
+</div>
+
+{block scripts}
+<script type="text/javascript" src="{$basePath}/js/live-form-validation.js"></script>
+{/block}

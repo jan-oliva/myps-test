@@ -1,0 +1,5 @@
+<VirtualHost *:8080>
+  ServerName utils.c3_core.dev
+  DocumentRoot /var/www/utils/
+  Options +Indexes +FollowSymLinks
+</VirtualHost>

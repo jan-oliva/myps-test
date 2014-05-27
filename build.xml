@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Project" basedir="." default="help" description="Tasks for developing, maintaining and deploying project">
+
+    <tstamp>
+        <format property="TSTAMP" pattern="%H%M%S" />
+    </tstamp>
+
+    <property file="${project.basedir}/build.properties" />
+
+    <!-- Main tasks -->
+    <target name="help" description="Help">
+        <echo>phing [target]</echo>
+        <echo>Targets:</echo>
+		<echo> create-db-deployer		creates DB deployer</echo>
+		<echo> create-db-manager		creates DB manager</echo>
+		<echo> destroy-db-deployer		remove DB deployer</echo>
+		<echo> create-db-application	creates DB application</echo>
+		<echo> destroy-db				destro DB</echo>
+        <echo> init-db					initialize DB</echo>
+        <echo> migrate-db				migrate DB via dbdeploy</echo>
+		<echo>orm-create-schema			first build of DB schema</echo>
+		<echo>orm-clear-cache			clera doctrine metadata</echo>
+		<echo>orm-check					check doctrine entity</echo>
+		<echo>orm-force-update-schema   update schema with direct update in DB !!!</echo>
+        <echo> analyze					static analysis with PHP(Lint|CS|MD|CPD), etc</echo>
+    </target>
+
+    <target name="migrate-db" description="Database migration">
+        <property name="dbdeploy.up-file" value="${dbdeploy.scripts}/up-${DSTAMP}${TSTAMP}.sql" />
+        <property name="dbdeploy.down-file" value="${dbdeploy.scripts}/down-${DSTAMP}${TSTAMP}.sql" />
+
+        <mkdir dir="${dbdeploy.scripts}" />
+        <mkdir dir="${dbdeploy.deltas-tmp}" />
+
+        <copy todir="${dbdeploy.deltas-tmp}" >
+            <fileset dir="${dbdeploy.deltas-org}">
+                <include name="*.sql" />
+            </fileset>
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="prefix" value="${db.token.prefix}" />
+                    <token key="db-main" value="${db.token.main}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <dbdeploy url="mysql:host=${db.host};dbname=${db.changelog-db}" userid="${db.username}" password="${db.password}"
+                  dir="${dbdeploy.deltas-tmp}" outputfile="${dbdeploy.up-file}" undooutputfile="${dbdeploy.down-file}" />
+        <delete dir="${dbdeploy.deltas-tmp}" />
+
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.username} -p${db.password} ${db.changelog-db} &lt; ${dbdeploy.up-file}" logoutput="1" checkreturn="1" />
+        <echo>Verify that database migration was successfull!</echo>
+
+        <input propertyname="done" defaultValue="yes">Press enter to delete up and down scripts in ${dbdeploy.scripts}</input>
+        <delete dir="${dbdeploy.scripts}" />
+    </target>
+	<target name="destroy-db-deployer" description="Database initialization">
+		<!-- User Deployer -->
+        <copy tofile="${dbdeploy.database.dir}/destroy_user_deployer-mod.sql" file="${dbdeploy.database.dir}/destroy_user_deployer.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_deployer_name" value="${db.user_deployer_name}" />
+                    <token key="user_deployer_password" value="${db.user_deployer_password}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_root_name} -p${db.user_root_password} mysql &lt; ${dbdeploy.database.dir}/destroy_user_deployer-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/destroy_user_deployer-mod.sql" />
+
+	</target>
+	<target name="destroy-db-application" description="Database initialization">
+		<!-- User Deployer -->
+        <copy tofile="${dbdeploy.database.dir}/destroy_user_application-mod.sql" file="${dbdeploy.database.dir}/destroy_user_application.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_deployer_name" value="${db.user_deployer_name}" />
+                    <token key="user_deployer_password" value="${db.user_deployer_password}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_root_name} -p${db.user_root_password} mysql &lt; ${dbdeploy.database.dir}/destroy_user_application-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/destroy_user_application-mod.sql" />
+
+	</target>
+
+	<target name="create-db-manager" description="Database initialization">
+		<!-- User Manager -->
+        <copy tofile="${dbdeploy.database.dir}/create_user_manager-mod.sql" file="${dbdeploy.database.dir}/create_user_manager.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_manager_name" value="${db.user_manager_name}" />
+                    <token key="user_manager_password" value="${db.user_manager_password}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/create_user_manager-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/create_user_manager-mod.sql" />
+	</target>
+
+	<target name="create-db-manager" description="Database initialization">
+		<!-- User Manager -->
+        <copy tofile="${dbdeploy.database.dir}/create_user_manager-mod.sql" file="${dbdeploy.database.dir}/create_user_manager.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_manager_name" value="${db.user_manager_name}" />
+                    <token key="user_manager_password" value="${db.user_manager_password}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/create_user_manager-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/create_user_manager-mod.sql" />
+	</target>
+
+	<target name="destroy-db-manager" description="Database initialization">
+		<!-- User Manager -->
+        <copy tofile="${dbdeploy.database.dir}/destroy_user_manager-mod.sql" file="${dbdeploy.database.dir}/destroy_user_manager.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_manager_name" value="${db.user_manager_name}" />
+                    <token key="user_manager_password" value="${db.user_manager_password}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/destroy_user_manager-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/destroy_user_manager-mod.sql" />
+	</target>
+
+	<target name="create-db-deployer" description="Database initialization">
+		<!-- User Deployer -->
+        <copy tofile="${dbdeploy.database.dir}/create_deployer-mod.sql" file="${dbdeploy.database.dir}/create_deployer.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_deployer_name" value="${db.user_deployer_name}" />
+                    <token key="user_deployer_password" value="${db.user_deployer_password}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_root_name} -p${db.user_root_password} mysql &lt; ${dbdeploy.database.dir}/create_deployer-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/create_deployer-mod.sql" />
+
+	</target>
+	<target name="destroy-db" description="Database initialization">
+		<!--  Data -->
+        <copy tofile="${dbdeploy.database.dir}/destroy_data-mod.sql" file="${dbdeploy.database.dir}/destroy_data.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_application_name" value="${db.user_application_name}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/destroy_data-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/destroy_data-mod.sql" />
+
+        <!-- User Application -->
+        <copy tofile="${dbdeploy.database.dir}/destroy_user_application-mod.sql" file="${dbdeploy.database.dir}/destroy_user_application.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_application_name" value="${db.user_application_name}" />
+                    <token key="user_application_password" value="${db.user_application_password}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/destroy_user_application-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/destoy_user_application-mod.sql" />
+
+	</target>
+    <target name="init-db" description="Database initialization">
+
+        <!-- Load Data -->
+        <copy tofile="${dbdeploy.database.dir}/load_data-mod.sql" file="${dbdeploy.database.dir}/load_data.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_application_name" value="${db.user_application_name}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/load_data-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/load_data-mod.sql" />
+
+        <!-- User Application -->
+        <copy tofile="${dbdeploy.database.dir}/create_user_application-mod.sql" file="${dbdeploy.database.dir}/create_user_application.sql">
+            <filterchain>
+                <replacetokens begintoken=":" endtoken=":">
+                    <token key="user_application_name" value="${db.user_application_name}" />
+                    <token key="user_application_password" value="${db.user_application_password}" />
+                    <token key="prefix" value="${db.prefix}" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+        <exec command="${mysql.bin} --default-character-set=utf8 -h${db.host} -u${db.user_deployer_name} -p${db.user_deployer_password} mysql &lt; ${dbdeploy.database.dir}/create_user_application-mod.sql" logoutput="1" checkreturn="1" />
+        <delete file="${dbdeploy.database.dir}/create_user_application-mod.sql" />
+    </target>
+
+	<target name="orm-create-schema" description="Create schema by doctrine console">
+		<exec command="sudo -u ${console.sudo.www} ${php.bin} ${console.doctrine.dir}/doctrine.php orm:schema-tool:create" logoutput="1" checkreturn="1" />
+	</target>
+
+	<target name="orm-clear-cache" description="Celar doctrine metadata">
+		<exec command="sudo -u ${console.sudo.www} ${php.bin} ${console.doctrine.dir}/doctrine.php orm:clear-cache:metadata" logoutput="1" checkreturn="1" />
+	</target>
+
+	<target name="orm-check" description="Check doctrine entities">
+		<exec command="sudo -u ${console.sudo.www} ${php.bin} ${console.doctrine.dir}/doctrine.php orm:validate-schema " logoutput="1" checkreturn="1" />
+	</target>
+
+	<target name="orm-force-update-schema" description="Force update  by doctrine console">
+		<exec command="sudo -u ${console.sudo.www} ${php.bin} ${console.doctrine.dir}/doctrine.php orm:schema-tool:update --force" logoutput="1" checkreturn="1" />
+	</target>
+
+    <target name="analyze" description="Static analysis of code">
+        <if>
+            <equals arg1="${path}" arg2="" casesensitive="false" trim="true" />
+            <then>
+                <property name="analyze.source" value="src/app/**/*.php,src/console/**/*.php" />
+            </then>
+            <else>
+                <property name="analyze.source" value="${path}" />
+            </else>
+        </if>
+
+        <!-- Define working fileset -->
+        <fileset dir="${project.basedir}" id="analyze.files" includes="${analyze.source}" />
+
+        <!-- Prepare reports directory -->
+        <property name="build.reports.dir.current" value="${build.reports.dir}/${DSTAMP}${TSTAMP}" />
+        <mkdir dir="${build.reports.dir.current}" />
+
+        <!-- PHPLint -->
+        <phplint deprecatedAsError="true" haltonfailure="true" tofile="${build.reports.dir.current}/phplint.txt" cachefile="${build.cache.dir}/phplint.cache">
+            <fileset refid="analyze.files" />
+        </phplint>
+
+        <!-- PHP Code Sniffer -->
+        <phpcodesniffer standard="PSR2" encoding="utf-8">
+            <fileset refid="analyze.files" />
+            <formatter type="checkstyle" outfile="${build.reports.dir.current}/phpcs.xml" />
+        </phpcodesniffer>
+
+        <!-- PHP Mess Detector -->
+        <phpmd rulesets="codesize,unusedcode,naming,design,controversial">
+            <fileset refid="analyze.files" />
+            <formatter type="xml" outfile="${build.reports.dir.current}/phpmd.xml" />
+        </phpmd>
+
+        <!-- PHP Copy Paste Detector -->
+        <phpcpd>
+            <fileset refid="analyze.files" />
+            <formatter type="pmd" outfile="${build.reports.dir.current}/phpcpd.xml" />
+        </phpcpd>
+
+        <!-- Apigen -->
+        <property name="analyze.source.apigen" value="${analyze.source}">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="\*+\.php" replace="" />
+                    <regexp pattern="/\*+" replace="" />
+                </replaceregexp>
+            </filterchain>
+        </property>
+        <apigen
+            source="${analyze.source.apigen}"
+            destination="${build.reports.dir.current}/docs"
+            charset="utf-8"
+            accesslevels="public,protected,private"
+            allowedhtml="b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,pre,code"
+            internal="Yes"
+            php="Yes"
+            tree="Yes"
+            sourcecode="No"
+            wipeout="No"
+            report="${build.reports.dir.current}/apigen.xml" />
+
+        <chmod mode="0777" verbose="true">
+            <fileset dir="${build.reports.dir.current}" />
+        </chmod>
+
+        <echo>All reports are available at ${build.reports.dir.current}</echo>
+    </target>
+
+</project>

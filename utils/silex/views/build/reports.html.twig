@@ -1,0 +1,115 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron page-header">
+        <h1>Statická analýza</h1>
+        <p>
+            Statická analýza kódu je analýza kódu SW bez spuštění programu, který lze z daného SW vybudovat.
+            Provádí se na nějaké verzi zdrojového kódu. Bývá spojeno s automatizovaným nástrojem a manuální lidské činnosti spočívající v porozumění, revize programu.
+        </p>
+    </div>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ app.request.baseUrl }}/">Utility</a></li>
+        <li><a href="{{ app.request.baseUrl }}/build/list/">Přehled sestavení</a></li>
+        <li class="active">Sestavení {{ dir }}</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>PHPLint</h2></div>
+                <div class="panel-body">
+                    <p>
+                        PHPLint je syntaktický validátor zdrojových kódů.
+                        Využívá pro svůj běh přímo php pomocí příkazu <code>php -l</code>.
+                        Výstupem jsou nalezené syntaktické problémy v souborech, které PHP dokáže detekovat.
+                    </p>
+                    <hr/>
+                    <a href="phplint.html" class="btn btn-{% if reports['phplint.txt'] > 0 %}success{% elseif reports['phplint.txt'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Report</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>PHP_CodeSniffer</h2></div>
+                <div class="panel-body">
+                    <p>
+                        <a href="https://github.com/squizlabs/PHP_CodeSniffer">PHPCS</a> detekuje porušení Coding Standardu ve zdrojových kódech.
+                        Ověřuje se vůči Coding Standardu <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md">PSR-2</a>.
+                        Výstupem je seznam souborů, které porušují Coding Standard.
+                    </p>
+                    <hr/>
+                    <a href="phpcs.html" class="btn btn-{% if reports['phpcs.xml'] > 0 %}success{% elseif reports['phpcs.xml'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>PHP Mess Detector</h2></div>
+                <div class="panel-body">
+                    <p>
+                        <a href="http://phpmd.org/">PHPMD</a> detekuje ve zdrojových kódech potenciální problémy jako:
+                        možné bugy, suboptimální kód, složité výrazy, nepoužité proměnné, etc.
+                        Výstupem je seznam souborů, v kterých byly nalezeny problémy.
+                    </p>
+                    <hr/>
+                    <a href="phpmd.html" class="btn btn-{% if reports['phpmd.xml'] > 0 %}success{% elseif reports['phpmd.xml'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Report</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>PHP Copy/Paste Detector</h2></div>
+                <div class="panel-body">
+                    <p>
+                        <a href="https://github.com/sebastianbergmann/phpcpd">PHPCPD</a> detekuje duplicity ve zdrojových kódech.
+                        Výstupem je v tabulce prezentovaný seznam souborů, v kterých byly nalezeny duplicity.
+                    </p>
+                    <hr />
+                    <!-- <a href="phpcpd.html" class="btn btn-{% if reports['phpcpd.xml'] > 0 %}success{% elseif reports['phpcpd.xml'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Report</a> -->
+                    Dočasně vypnuto z důvodu problému se spouštěním pomocí phingu a stažením pomocí composeru.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>Apigen</h2></div>
+                <div class="panel-body">
+                    <p>
+                        <a href="http://apigen.org/">ApiGen</a> dokáže zkontrolovat dokumentační komentáře.
+                        Výstupem je v tabulce prezentovaný seznam souborů, v kterých byly nalezeny problematické či chybějící části dokumentace.
+                    </p>
+                    <hr />
+                    <a href="apigen.html" class="btn btn-{% if reports['apigen.xml'] > 0 %}success{% elseif reports['apigen.xml'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Report</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h2>API Dokumentace</h2></div>
+                <div class="panel-body">
+                    <p>
+                        Vygenerovaná dokumentace pomocí Apigenu.
+                    </p>
+                    <hr />
+                    <a href="/builds/reports/{{ dir }}/docs/" class="btn btn-{% if reports['docs'] > 0 %}success{% elseif reports['docs'] == 0 %}primary{% else %}danger{% endif %} btn-lg">Prohlédnout</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

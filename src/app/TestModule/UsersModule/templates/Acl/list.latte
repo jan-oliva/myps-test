@@ -1,0 +1,51 @@
+{block head}
+	<link rel="stylesheet" media="screen" href="{$basePath}/css/dataGrid/css/screen.css" type="text/css" />
+	<script type="text/javascript" src="{$basePath}/js/ajaxForm.js"></script>
+	<link rel="stylesheet" media="screen" href="{$basePath}/grido/grido.css" type="text/css" />
+	<script type="text/javascript" src="{$basePath}/grido/grido.js"></script>
+	<title n:block="title" >{_}Seznam ACL{/_}</title>
+{/block}
+
+{block content}
+
+<div class="row">
+
+	<div class="col col-lg-10">
+	{control usersTabs}
+
+	{control groupAclGrid}
+	{control removeAclDialog}
+	</div>
+</div>
+{block scripts}
+<script>
+$(function(){
+Grido.Grid.prototype.initActions();
+//$(document).on('click','a[data-grido-confirm]',function(e){
+//		var href = $(this).attr('href');
+//		console.log($(this).attr('data-grido-confirm'));
+//		//$('#modal_btn_ok_removeAclDialog').attr('data-href',href);
+//		//$('#modal_btn_ok_removeAclDialog').modal('show');
+//
+//		try
+//		{
+//			$('#modal_btn_ok_removeAclDialog').find('.modal-body').text($(this).attr('data-grido-confirm'));
+//			$('#modal_btn_ok_removeAclDialog').attr('href', href);
+//			$('#modal_btn_ok_removeAclDialog').modal('show);
+//		}catch(e){
+//			console.log(e);
+//		}
+//		e.preventDefault() ;
+//	});
+//
+//	$(document).on('click','#modal_btn_ok_removeAclDialog',function(e){
+//		var link = $(this).attr('data-href');
+//		console.log(link);
+//
+//		e.preventDefault() ;
+//		//window.location.href = link;
+//
+//	});
+});
+</script>
+{/block}

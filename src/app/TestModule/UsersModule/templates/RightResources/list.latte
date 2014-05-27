@@ -1,0 +1,19 @@
+{block head}
+<link rel="stylesheet" media="screen" href="{$basePath}/css/dataGrid/css/screen.css" type="text/css" />
+
+<script type="text/javascript" src="{$basePath}/js/ajaxForm.js"></script>
+<link rel="stylesheet" media="screen" href="{$basePath}/grido/grido.css" type="text/css" />
+<script type="text/javascript" src="{$basePath}/grido/grido.js"></script>
+<title n:block="title" >{_}Zdroje oprávnění{/_}</title>
+{/block}
+
+{block content}
+
+<div class="row">
+	<div class="col col-lg-10">
+	{control usersTabs}
+
+	{control rightResourcesGrid}
+	</div>
+</div>
+

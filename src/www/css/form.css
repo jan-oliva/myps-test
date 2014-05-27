@@ -1,0 +1,51 @@
+/*
+    Document   : form.css
+    Created on : 4.12.2011, 19:47:16
+    Author     : oli
+    Description:
+        Purpose of the stylesheet follows.
+*/
+tr.required th label:before{
+	content: "* ";
+	color: red;
+}
+
+label.required{
+
+}
+
+/*– CSS třída, která se nastaví položce formuláře pokud se u ní vyskytne chyba*/
+.form-control-error{
+	border-color: red;
+
+}
+/* – CSS třída, která se nastaví chybové zprávě*/
+.form-error-message{
+	color: red;
+}
+/* – CSS třída, která se nastaví zprávě u správně vyplněné položky*/
+.form-valid-message{
+
+}
+/*– boolean – zobrazit či nezobrazit zprávu u správně vyplněné položky*/
+.showValid{
+
+}
+/*– HTML tag, který bude obsahovat zprávu*/
+.messageTag{
+
+}
+/* – string – přidává se nakonec id atributu tagu zprávy*/
+.messageIdPostfix{
+
+}
+
+
+form th{
+	padding-right: 3px;
+}
+
+form td {
+	white-space:nowrap;
+}
+

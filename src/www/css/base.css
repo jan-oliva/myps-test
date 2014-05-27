@@ -1,0 +1,43 @@
+ul.contenTabs{
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+input.btn-sucess{
+	background-color: #47a447;
+	border-color: #398439;
+	color: #fff;
+}
+form input[type="submit"]{
+	margin-top: 5px;
+}
+ul.nav-tabs{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+ul.nav-tabs li a {
+	text-transform: lowercase;
+}
+form input[type='checkbox']{
+	margin-right: 5px;
+}
+
+/* zuzeni leveho side baru*/
+#page-wrapper {
+	margin-left: 180px;
+}
+.navbar-static-side{
+	width: 180px;
+}
+/* *********** */
+
+table.table tr.job-custom-color td {
+	background-color: inherit;
+}
+i.fa-eraser{
+	color: #d44950;
+
+}
+i.glyphicon-pencil{
+	color: #428bca;
+}

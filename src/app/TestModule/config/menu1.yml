@@ -1,0 +1,124 @@
+## YAML Template.
+---
+menu:
+    items:
+        item1:
+            id: 1
+            link: ":Test:Users:Users:list"
+            label: uživatelé
+            class: "fa fa-fw fa-user"
+            order: 1 #poradi v menu
+            childern:
+                item11:
+                    id: 11
+                    link: ":Test:Users:Users:list"
+                    label: výpis
+                    class:
+                    order: 1
+                    childern:
+                item12:
+                    id: 12
+                    link: ":Jobs:Users:Roles:list"
+                    label: role uživatelů
+                    class:
+                    order: 2
+                    childern:
+        item2:
+            id: 2
+            link: ":Jobs:Administration:NumberSeries:list"
+            label: administrace
+            class: "fa fa-fw fa-wrench"
+            order: 2
+            childern:
+                item21:
+                    id: 21
+                    link: ":Jobs:Administration:NumberSeries:list"
+                    label: číselné řady
+                    class:
+                    order: 2
+                    childern:
+                item22:
+                    id: 22
+                    link: ":Jobs:Administration:MeasureUnit:list"
+                    label: měrné jednotky
+                    class:
+                    order: 3
+                    childern:
+                item23:
+                    id: 23
+                    link: ":Jobs:Administration:JobStatus:list"
+                    label: stavy zakázky
+                    class:
+                    order: 4
+                    childern:
+                item24:
+                    id: 24
+                    link: ":Jobs:Administration:ProductGroup:list"
+                    label: skupiny výrobků
+                    class:
+                    order: 5
+                    childern:
+
+        item3:
+            id: 3
+            link: ""
+            label: Zakázky
+            class: "fa fa-fw fa-book"
+            order: 2
+            childern:
+                item21:
+                    id: 21
+                    link: ""
+                    label: zakázky
+                    class:
+                    order: 2
+                    childern:
+                item22:
+                    id: 22
+                    link: ":Jobs:Customers:Administration:list"
+                    label: zákazníci
+                    class:
+                    order: 2
+                    childern:
+                item23:
+                    id: 23
+                    link: ":Jobs:SupplyDemand:SupplyDemand:list"
+                    label: nabídky
+                    class:
+                    order: 2
+                    childern:
+        item4:
+            id: 4
+            link: ""
+            label: pálení
+            class: "fa fa-fw fa-fire"
+            order: 2
+            childern:
+        item5:
+            id: 5
+            link: ""
+            label: prac. D
+            class: "fa fa-fw fa-user"
+            order: 2
+            childern:
+        item6:
+            id: 6
+            link: ""
+            label: kooperace
+            class: "fa fa-fw fa-book"
+            order: 2
+            childern:
+        item7:
+            id: 7
+            link: ""
+            label: údržba
+            class: "fa fa-fw fa-gear"
+            order: 2
+            childern:
+        item8:
+            id: 8
+            link: ""
+            label: měřidla
+            class: "fa fa-fw fa-tachometer"
+            order: 2
+            childern:

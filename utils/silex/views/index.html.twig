@@ -1,0 +1,429 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron page-header">
+        <h1>Nástroje, návody a utility</h1>
+        <p>
+            Rozcestník nástrojů, návodů a utilit, které jsou dostupné na virtuálním stroji.
+            Jedná se o nástroje a utility v podobě webových a konzolových aplikací.
+            Obsahuje také základní návody pro commitování a ovládání utilit.
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class='container' id='notifications'></div>
+
+    <ul class="nav nav-pills nav-justified" id="actionTab">
+        <li class="active"><a href="#commit">Chci commitovat</a></li>
+        <li><a href="#database">Chci pracovat s databází</a></li>
+        <li><a href="#debug">Chci debugovat nebo profilovat</a></li>
+        <li><a href="#project">Chci spravovat projekt</a></li>
+    </ul>
+
+    <p />
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="commit">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>Sestavení</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Přehled sestavení, které byly vygenerovány pomocí příkazu <code>phing -Dpath='/path/to/files' analyze</code>, který spouští nástroje pro statickou analýzu kódu a generování dokumentace.
+                                V sestaveních je možné procházet jednotlivé reporty, sledovat jejich vytváření v reálném čase a případně sestavení smazat.
+                                Každé sestavení obsahuje
+                            </p>
+                            <ul>
+                                <li>reporty z nástrojů pro statickou analýzu kódu (PHPLint, PHPCS, PHPMD, PHPCPD, Apigen)</li>
+                                <li>vygenerovanou API dokumentaci (Apigen)</li>
+                            </ul>
+                            <hr />
+                            <div>
+                                <a href="{{ app.request.baseUrl }}/build/list/" class="btn btn-primary btn-lg">prohlédnout</a>
+                                <a href="{{ app.request.baseUrl }}/build/list/#runBuildModal" class="btn btn-success btn-lg">sestavit</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3></a>PHP-CS-Fixer</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Konzolová aplikace, která dokáže opravit většinu problémů ve zdrojových kódech, které porušují <strong>Coding Standardy</strong> definované v PSR-0, PSR-1, PSR-2, apod..
+                                Spouští se pomocí příkazu <code>php-cs-fixer fix /path/to/project --level=LEVEL</code>. LEVEL jsou jednotlivé standardy (psr0, psr1, psr2, all).
+                            </p>
+                            <p>
+                                Je možné opravit zdrojové kódy také dle <a href="https://github.com/fabpot/PHP-CS-Fixer#usage">specifického pravidla</a>.
+                                Pokud chcete vědět, co vám opraví, je možné pustit ho s přepínačem <code>php-cs-fixer --dry-run</code>.
+                            </p>
+                            <hr />
+                            <div class="btn-group">
+                                <a data-toggle="modal" href="#fixerRunModal" class="btn btn-success btn-lg">opravit kód</a>
+                                <a href="#" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-toggle="modal" href="#fixerDryRunModal">opravit kód nanečisto</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="fixerRunModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Opravit kód</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Cesta k projektu</span>
+                                                <input type="text" class="form-control" id="fixerRunPath" placeholder="src/app/">
+                                            </div>
+                                            <span class="help-block">
+                                                Je možné zadat cestu, kde
+                                                <ul>
+                                                    <li><em>nevyplněné</em> znamená vše v projektu (ve složce app/)</li>
+                                                </ul>
+                                                Stejný příkaz je možné spustit i ručně přes konzoli pomocí <code>php-cs-fixer --level=all src/app/</code>.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-default" data-dismiss="modal">zavřít</a>
+                                        <a class="btn btn-primary build-action" href="{{ app.request.baseUrl }}/fixer/run/">spustit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="fixerDryRunModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Opravit kód nanečisto</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Cesta k projektu</span>
+                                                <input type="text" class="form-control" id="fixerDryRunPath" placeholder="src/app/">
+                                            </div>
+                                            <span class="help-block">
+                                                Je možné zadat cestu, kde
+                                                <ul>
+                                                    <li><em>nevyplněné</em> znamená vše v projektu (ve složce app/)</li>
+                                                </ul>
+                                                Stejný příkaz je možné spustit i ručně přes konzoli pomocí <code>php-cs-fixer --dry-run --level=all src/app/</code>.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-default" data-dismiss="modal">zavřít</a>
+                                        <a class="btn btn-primary build-action" href="{{ app.request.baseUrl }}/fixer/dry-run/">spustit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>PHPUnit</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Konzolová aplikace pro <a href="http://phpunit.de/manual/current/en/textui.html#textui.clioptions">spouštění unit-testů</a>.
+                                Spouští se ze složky <em>tests/</em> pomocí příkazu <code>phpunit</code>.
+                            </p>
+                            <p>
+                                Umožňuje také analyzovat pokrytí kódu testy a vygenerovat <strong>Code Coverage Report</strong> pomocí příkazu <code>phpunit --coverage-html /path/to/report [MyTest]</code>.
+                                Do <em>/path/to/report</em> se vygeneruje report. Volitelně je možné zadat název testu nad kterým se má report provést, jinak bude proveden nad veškerým kódem.
+                            </p>
+                            <hr />
+                            <div class="btn-group">
+                                <a href="{{ app.request.baseUrl }}/phpunit/run/" class="btn btn-success btn-lg action">spustit testy</a>
+                                <a href="#" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a data-toggle="modal" href="#testsRunModal">spustit vybrané testy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="testsRunModal" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">Spustit vybrané testy</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Názvy testů</span>
+                                                <input type="text" class="form-control" id="testsRunPath" placeholder="">
+                                            </div>
+                                            <span class="help-block">
+                                                Je možné zadat cestu, kde
+                                                <ul>
+                                                    <li><em>nevyplněné</em> znamená všechny testy v projektu (ve složce tests/)</li>
+                                                </ul>
+                                                Stejný příkaz je možné spustit i ručně přes konzoli pomocí <code>phpunit [Test]</code>.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a class="btn btn-default" data-dismiss="modal">zavřít</a>
+                                        <a class="btn btn-primary build-action" href="{{ app.request.baseUrl }}/phpunit/run/">spustit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>Přehled metod kontrolerů</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Metody kontrolerů, které jsou definovány včetně umístění.
+                                Obsahuje statistiku použití názvů metod napříč moduly a kontrolery.
+                                Slouží pro ověření správnosti názvů a udržení konzistence pojmenování metod.
+                            </p>
+                            <p>
+                                Zjišťování definovaných metod je v reálném čase a parsování všech kontrolerů chvíli trvá, 5-10s.
+                            </p>
+                            <hr />
+                            <a href="{{ app.request.baseUrl }}/methods/list/" class="btn btn-primary btn-lg">prohlédnout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-info">
+                        <div class="panel-heading"><h3>Jak správně commitovat?</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Commit je triviální úloha sama osobě, ale aby byl commit použitelný musí splňovat několik pravidel a řídit se jasným postupem.
+                                Použitelný commit vyžaduje trpělivost, zodpovědnost, sebekontrolu a praxi.
+                                Ačkoliv se to na první pohled nezdá, korektní commit je mnohdy cennější než novinka/oprava, kterou obsahuje.
+                                Hodnota commitu spočívá v potřebě zacházet s historií commitů jako (blame, merge, branch, tag, ...).
+                                Každé nahlédnutí do historie projektu, která nedodržuje základní postupy, je unavující, neefektivní a především drahé.
+                            </p>
+                            <p>
+                                Základní pravidla, která je potřeba dodržet před každým commitem kódu:
+                            </p>
+                            <ol>
+                                <li>První a nejdůležitější pravidlo je <em>ujasnit si, co je potřeba commitnout</em>. Commit musí vždy obsahovat jeden logický celek, např. <strong>jednu novinku nebo opravu</strong>!</li>
+                                <li>Každý commit musí zanechat aplikaci v konzistentním stavu. Je nutné, aby aplikace po každém commitu fungovala resp. prošla testy.</li>
+                                <li>Commit se skládá ze souhrnu a seznamu souborů, které byly změněny/přidány/odstraněny.
+                                    Souhrn obsahuje co a proč se změnilo.</li>
+                                <li>Souhrn commitu má jednoznačnou strukturu.
+                                    První řádek obsahuje typ obsahu commitu, včetně ticketu, ke kterému patří a krátký popisek (max 50 znaků).
+                                    Následuje prázdný řádek a poté pokračuje commit zbývajícím, víceřádkovým souhrnem, pokud je potřeba.<br />
+                                    <pre>
+[FIX #1234] Oprava natvrdo nastaveného kódování v IntlService.
+
+Kódování v IntlService::translate bylo natvrdo nastaveno na en_US.
+Upraveno na načtení z DB konfigurace přes IntlModel.</pre>
+                                </li>
+                            </ol>
+                            <p>
+                                Postup pro korektní commitnutí
+                            </p>
+                            <ol>
+                                <li>Ujasnit si, co a proč chceme commitovat a k jakému ticketu to patří.</li>
+                                <li>Aplikovat testy pomocí Alt+F6 v Netbeans nebo v konzoli na guestu pomocí <code>cd tests/ && phpunit</code> a ověřit, že všechny projdou úspěšně!</li>
+                                <li>Otestovat, že aplikace se chová předpovídatelně a splňuje zadání z úkolu a to i ve všech neočekávaných/chybových stavech.</li>
+                                <li>Na všechny přidané/změněné soubory aplikovat Ctrl+Shift+I v Netbeans nebo-li vytáhnout jmenné prostory do <em>use</em> na začátku souboru.
+                                    Je nutné aplikovat tento postup na všechny třídy/funkce mimo ty v kořenovém jmenném prostoru</li>
+                                <li>Naformátovat kód všech přidaných/změněných souborů dle Coding Standardu, obvykle stačí Alt+Shift+F v Netbeans nebo-li Source -> Format.
+                                    Od Netbeans 7.3 lze také nastavit, aby se soubor naformátoval při každém uložení.
+                                    Další úrovní oprav dle Coding Standardu je použití php-cs-fixeru, který dokáže vyřešit mnohé problémy mimo základního formátování.</li>
+                                <li>Spustit sestavení na všech přidaných/změněných souborech.
+                                    Výsledek sestavení jsou reporty o stavu kódu z různých nástrojů pro statickou analýzu.
+                                    Dle reportů je potřeba opravit všechny problémy, které report nalezl až na výjimky, které sem budou doplňovány.
+                                    V tomto bodě je nutné zkontrolovat i stav dokumentace.</li>
+                                <li>Pokud byly potřeba databázové změny je nutné vytvořit delta skripty, které změny reprezentují <a href="http://devel.collectora-int.net/redmine/projects/general/wiki/Dbdeploy_-_delta_skripty">více informací na wiki</a>.</li>
+                                <li>Pokud byly provedeny změny v závislých projektech, je potřeba spustit composer update a po doběhnutí stáhnout composer.lock z guesta a commitnout ho k projektu v commitu, který změn využívá.</li>
+                                <li>Pokud byly přidány nějaké metody na libovolném controlleru typu (before*, after*, render*, event*) je nutné ověřit, zda je dodržováno konzistentní pojmenování.</li>
+                                <li>Těsně před commitnutím je vhodné se ještě jednou ujistit, že se opravdu commituje to, co je potřeba.
+                                    Ideální je projít celý proces od začátku a ověřit, že je vše v pořádku a beze změny.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="database">
+            <div class="panel panel-default panel-success">
+                <div class="panel-heading"><h3>Adminer</h3></div>
+                <div class="panel-body">
+                    <p>
+                        Adminer je plně vybavený nástroj pro správu databáze.
+                        Dokáže spravovat různé druhy databází jako např. MySQL, PostgreSQL, SQLite, MS SQL, Oracle, atd..
+                        Do Admineru jsou zavedeny tyto pluginy:
+                    </p>
+                    <ul>
+                        <li>LoginServers, natvrdo nastaví servery, které jsou dostupné.</li>
+                        <li>AutoComplete, v SQL editoru napovídá klíčová slova a tabulky.</li>
+                        <li>TablesFilter, filtruje seznam tabulek.</li>
+                        <li>DumpXmlDataSet, exportuje tabulky a jejich data do <a href="http://phpunit.de/manual/current/en/database.html#database.available-implementations">Xml DataSet (PHPUnit)</a>.</li>
+                        <li>DumpFlatXmlDataSet, exportuje tabulky a jejich data do <a href="http://phpunit.de/manual/current/en/database.html#database.available-implementations">Flat Xml DataSet (PHPUnit)</a>.</li>
+                    </ul>
+                    <hr />
+                    <div class="btn-group">
+                        <a href="{{ app.request.baseUrl }}/adminer/" class="btn btn-primary btn-lg">přihlásit se</a>
+                        <a href="#" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ app.request.baseUrl }}/adminer/" class="send-form" data-send-form='{"auth[driver]":"server","auth[server]":"localhost","auth[username]":"root","auth[password]":"t00r"}'>přihlásit se jako root</a></li>
+                            <li><a href="{{ app.request.baseUrl }}/adminer/" class="send-form" data-send-form='{"auth[driver]":"server","auth[server]":"localhost","auth[username]":"manager","auth[password]":"manager"}'>přihlásit se jako manager</a></li>
+                            <li><a href="{{ app.request.baseUrl }}/adminer/" class="send-form" data-send-form='{"auth[driver]":"server","auth[server]":"localhost","auth[username]":"application","auth[password]":"application"}'>přihlásit se jako application</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="debug">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>Xdebug</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                PHP extenze, která umožňuje debugovat (krokovat, vidět obsah proměnných, sledovat callstack, atd.) aplikaci přímo z IDE.
+                                Podporuje zásobníky, trasování funkcí a analýzu profilovacích informací, alokace paměti a vykonávání kódu.
+                            </p>
+                            <p>
+                                Extenze se zapíná pomocí <a href="http://xdebug.org/docs/remote">speciálního požadavku v URL</a> a je k tomu mít potřeba nastavené i IDE.
+                                Ovládání extenze usnadňuje např. <a href="https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc">doplněk do chromu</a>.
+                                <strong>Pozor na nastavení firewallu</strong>, obvykle to je hlavní problém, proč se Xdebug nespojí s IDE!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>XHProf</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Jedná se o hierarchický profiler na úrovni funkcí, do systému je zaveden jako PHP extenze, která umožňuje profilovat požadavek na aplikaci.
+                            </p>
+                            <p>
+                                Profilování se spouští odkomentováním kódu v <em>src/app/bootstrap.php</em>.
+                                Na konci stránky se při spuštěném profilování zobrazí odkaz na výstup XHProfu.
+                                Odkaz vede na profilovací informace posledního požadavku, který obsahuje jednotlivá volání funkcí a cenu jejich volání.
+                            </p>
+                            <hr />
+                            <a href="{{ app.request.baseUrl }}/xhprof/xhprof_html/" class="btn btn-primary btn-lg">prohlédnout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane" id="project">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>Composer</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Konzolová aplikace pro správu závislostí projektu.
+                                Balíčky se pomocí příkazu <code>composer install</code> instalují dle posledního nastavení v <em>composer.lock</em>.
+                                Balíčky se aktualizují pomocí příkazu <code>composer update</code>.
+                                Veškeré nainstalované balíčky jsou uložené ve složce <em>vendor</em> ve tvaru <em>vendor/project</em>.
+                            </p>
+                            <hr />
+                            <div>
+                                <a href="{{ app.request.baseUrl }}/composer/install/" class="btn btn-success btn-lg action">install</a>
+                                <a href="{{ app.request.baseUrl }}/composer/update/" class="btn btn-success btn-lg action">update</a>
+                                <a href="{{ app.request.baseUrl }}/composer/delete-vendor/" class="btn btn-danger btn-lg action">smazat vendor/</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-success">
+                        <div class="panel-heading"><h3>Phing</h3></div>
+                        <div class="panel-body">
+                            <p>
+                                Konzolová aplikace sloužící pro buildování aplikací a automatizaci úloh.
+                                Jako konfiguraci využívá XML soubor <em>build.xml</em> a nastavení je uloženo v <em>build.properties</em>.
+                                Spouští se pomocí příkazu <code>phing</code>, který vypíše seznam dostupných příkazů.
+                                Aktuálně dostupné úlohy jsou:
+                            </p>
+                            <ul>
+                                <li><code>phing init-db</code> - inicializace databáze (částečně)</li>
+                                <li><code>phing migrate-db</code> - migrace databáze (ve vývoji)</li>
+                                <li><code>phing analyze</code> - statická analýza kódu, více viz <strong>Sestavení</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script type='text/javascript'>
+    $(function () {
+        $('#actionTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        $('a.send-form').sendForm();
+
+        $('a.action').execButton();
+
+        $('#fixerRunModal a.build-action').execButton({
+            alwaysCallback: function () {
+                $('#fixerRunModal').modal('hide');
+            },
+            data: {
+                path: function () {
+                    var $input = $('#fixerRunPath');
+                    return $input.val() ? $input.val() : $input.attr('placeholder');
+                }
+            }
+        });
+
+        $('#fixerDryRunModal a.build-action').execButton({
+            alwaysCallback: function () {
+                $('#fixerDryRunModal').modal('hide');
+            },
+            data: {
+                path: function () {
+                    var $input = $('#fixerDryRunPath');
+                    return $input.val() ? $input.val() : $input.attr('placeholder');
+                }
+            }
+        });
+
+        $('#testsRunModal a.build-action').execButton({
+            alwaysCallback: function () {
+                $('#testsRunModal').modal('hide');
+            },
+            data: {
+                path: function () {
+                    var $input = $('#testsRunPath');
+                    return $input.val() ? $input.val() : $input.attr('placeholder');
+                }
+            }
+        });
+    });
+ </script>
+{% endblock %}

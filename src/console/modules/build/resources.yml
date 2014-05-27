@@ -1,0 +1,91 @@
+## YAML Template.
+resources:
+    roles:
+        -
+            id: 1
+            name: "superadmin"
+            label: "superadmin"
+        -
+            id: 2
+            name: "admin"
+            label: "admin"
+        -
+            id: 3
+            name: "user"
+            label: "user"
+
+    rights:
+        -
+           name: '*'
+           label: 'all'
+        -
+            name: 'Test:Users:Users'
+            label: 'uživatelé'
+        -
+            name: 'Test:Users:Acl'
+            label: 'ACL'
+        -
+            name: 'Test:Users:Roles'
+            label: 'Roles'
+        -
+            name: 'Test:Users:RightResources'
+            label: 'ACL Resurces'
+
+    acl:
+        -
+            roleID: 1
+            resourceName: "*"
+            privilege: "*"
+            allow: true
+
+        -
+            roleID: 1
+            resourceName: "Test:Users:Users"
+            privilege: "*"
+            allow: true
+        -
+            roleID: 2
+            resourceName: "Test:Users:Users"
+            privilege: "*"
+            allow: true
+        -
+            roleID: 1
+            resourceName: "Test:Users:Roles"
+            privilege: "*"
+            allow: true
+        -
+            roleID: 1
+            resourceName: "Test:Users:RightResources"
+            privilege: "*"
+            allow: true
+        -
+            roleID: 1
+            resourceName: "Test:Users:Acl"
+            privilege: "*"
+            allow: true
+
+    users:
+        -
+            id: 1
+            name: super
+            surname: admin
+            login: superadmin
+            password: superadmin
+            active: true
+            role: superadmin
+        -
+            id: 2
+            name: app
+            surname: admin
+            login: admin
+            password: testAdmin
+            active: true
+            role: admin
+        -
+            id: 3
+            name: demo
+            surname: user
+            login: demo
+            password: demodemo
+            active: true
+            role: user

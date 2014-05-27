@@ -1,0 +1,100 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<div class="container">
+    <div class="jumbotron page-header">
+        <h1>Přehled sestavení</h1>
+        <p>
+            Sestavení obsahuje reporty výsledků z nástrojů statické analýzy, report stavu dokumentace a vygenerovanou dokumentaci.
+            Historie sestavení je od nejnovějšího po nejstarší.
+        </p>
+    </div>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ app.request.baseUrl }}/">Utility</a></li>
+        <li class="active">Přehled sestavení</li>
+    </ol>
+</div>
+
+<div class="container">
+    <div class='container' id='notifications'></div>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="col-lg-7">Sestavení</th>
+                <th class="col-lg-4">Naposledy změněno</th>
+                <th class="col-lg-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for name, value in dirs %}
+                <tr>
+                    <td>
+                        <a href="{{ app.request.baseUrl }}/build/{{ name }}/reports/">{{ name }}</a>
+                        <span class="label label-{% if value.count == value.max %}success{% elseif value.count > 0 %}warning{% else %}danger{% endif %}">{{ value.count }} z {{ value.max }}</span>
+                    </td>
+                    <td>{{ value.time }}</td>
+                    <td class="text-right"><a href="{{ app.request.baseUrl }}/build/{{ name }}/delete/" title="Smazat sestavení"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="3"><strong>Žádná</strong> sestavení nejsou k dispozici.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a data-toggle="modal" href="#runBuildModal" class="btn btn-success btn-lg">sestavit</a>
+    </div>
+
+    <div class="modal fade" id="runBuildModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Vygenerovat sestavení</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="path" class="col-lg-3 control-label">Vzor cesty</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" id="runBuildPath" placeholder="src/app/**/*.php,src/console/**/*.php">
+                            <span class="help-block">
+                                Je možné zadat cestu pomocí vzoru, kde
+                                <ul>
+                                    <li>* nahrazuje názvy souborů/adresářů</li>
+                                    <li>** nahrazuje části cesty, včetně /</li>
+                                    <li><em>nevyplněné</em> znamená vše v projektu (ve složkách app/ a console/)</li>
+                                </ul>
+                                Také je možné oddělit čárkou jednotlivé vzory jako např. <em>path/to/dir/**/*.php,path/to/file.php</em>.
+                                Stejný příkaz je možné spustit i ručně přes konzoli pomocí <code>phing -Dpath='src/app/modules/**/*.php' analyze</code>.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-default" data-dismiss="modal">Zavřít</a>
+                    <a class="btn btn-primary build-action" href="{{ app.request.baseUrl }}/build/run/">Spustit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type='text/javascript'>
+        $(function () {
+            $('a.build-action').execButton({
+                alwaysCallback: function () {
+                    $('#runBuildModal').modal('hide');
+                },
+                data: {
+                    path: function () {
+                        return $('#runBuildPath').val();
+                    }
+                }
+            });
+
+            if (window.location.hash === '#runBuildModal') {
+                $('#runBuildModal').modal('show');
+            }
+        });
+        </script>
+{% endblock %}

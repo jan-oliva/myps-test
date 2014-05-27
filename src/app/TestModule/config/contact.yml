@@ -1,0 +1,4 @@
+#config for \JO\Nette\Application\UI\Contact\Skype\Status
+skype:
+    account: j.oliva
+    label: Jan Oliva

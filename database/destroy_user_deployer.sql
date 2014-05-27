@@ -1,0 +1,1 @@
+DROP USER ':user_deployer_name:'@'%';

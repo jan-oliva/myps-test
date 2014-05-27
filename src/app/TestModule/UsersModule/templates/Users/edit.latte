@@ -1,0 +1,45 @@
+{block head}
+<script src="{$basePath}/js/netteForms.js"></script>
+<link rel="stylesheet" media="screen" href="{$basePath}/css/form.css" type="text/css" />
+
+<script type="text/javascript" src="{$basePath}/grido/grido.js"></script>
+<link rel="stylesheet" media="screen" href="{$basePath}/grido/grido.css" type="text/css" />
+<title n:block="title" >{_}editace uživate{/_}</title>
+{/block}
+{block content}
+
+<div class="container">
+
+
+	{control usersTabs}
+	<div class="row">
+		<div class="col-lg-4">
+			{control userForm}
+		</div>
+		{snippet rolesAdmin}
+		<div class="col-lg-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">{_"Přiřazené role"}</div>
+				<ul n:if="count($roles)>0">
+					<li n:foreach="$roles as $role"><strong>{$role->getName()}</strong>&nbsp;({$role->getLabel()})
+						<a n:href="unassign! $role->getId(), $userID" class="ajax">
+							{JO\Nette\Application\UI\SbAdmin\Icons\Icon::createIcon(JO\Nette\Application\UI\SbAdmin\Icons\Icon::DELETE)->title("odebrat")}
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="panel panel-success">
+				<div class="panel-heading">{_"Dostupné role"}</div>
+
+				{control userPossibleRolesGrid}
+			</div>
+		</div>
+		{/snippet}
+	</div>
+
+
+</div>
+
+{block scripts}
+<script type="text/javascript" src="{$basePath}/js/live-form-validation.js"></script>
+{/block}

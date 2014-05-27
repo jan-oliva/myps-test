@@ -1,0 +1,1 @@
+DROP USER ':user_application_name:'@'%';

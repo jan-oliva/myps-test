@@ -1,0 +1,22 @@
+{block head}
+<link rel="stylesheet" media="screen" href="{$basePath}/css/dataGrid/css/screen.css" type="text/css" />
+
+<script type="text/javascript" src="{$basePath}/js/ajaxForm.js"></script>
+
+<script type="text/javascript" src="{$basePath}/grido/grido.js"></script>
+<link rel="stylesheet" media="screen" href="{$basePath}/grido/grido.css" type="text/css" />
+<title n:block="title" >{_}role uživatele{/_}</title>
+{/block}
+
+{block content}
+
+<div class="row">
+	<div class="col col-lg-9">
+	{control usersTabs}
+
+	{control userRolesGrid}
+	<br />
+	{control skypeStatus}
+	</div>
+</div>
+

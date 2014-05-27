@@ -1,0 +1,15 @@
+menu:
+    items:
+        item:
+			id: 1
+			link: "Users:list"
+			label: "uživatelé"
+			childern:
+				item:
+					id: 11
+					link: "Users:list"
+					label: "uživatelé"
+				item:
+					id: 12
+					link: "Users:add"
+					label: "nový uživatel"

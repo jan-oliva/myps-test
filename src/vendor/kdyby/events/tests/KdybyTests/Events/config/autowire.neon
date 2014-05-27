@@ -1,0 +1,13 @@
+events:
+	optimize: no
+	validate: no
+	autowire: yes
+
+services:
+	application:
+		class: NULL
+		factory: Nette\Application\Application
+
+	routerFactory: KdybyTests\Events\RouterFactory
+	router:
+		factory: [@routerFactory, createRouter]

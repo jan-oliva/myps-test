@@ -1,0 +1,56 @@
+#
+# SECURITY WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
+#
+# If you don't protect this directory from direct web access, anybody will be able to see your passwords.
+# http://nette.org/security-warning
+#
+common:
+	parameters:
+
+	php:
+		date.timezone: Europe/Prague
+		# zlib.output_compression: yes
+
+	nette:
+		application:
+			errorPresenter: Error
+
+		database:
+			#dsn: 'mysql:host=10.99.0.203;dbname=jo_eshop_eshop'
+			#user: 'application'
+			#password: 'application'
+
+		session:
+			expiration: 14 days
+
+	#dibi:
+	#	host: 10.99.0.200
+	#	username: application
+	#	password: application
+	#	database: eshop_connect
+	#	lazy: true
+
+	doctrine:
+		host: 10.99.0.204
+		user: application
+		password: application
+		dbname: jo_myps
+		metadata:
+			Entity: %appDir%/../app/entity
+
+
+	services:
+		EntityManager: @Kdyby\Doctrine\EntityManager
+
+		PasswordGenerator:
+			class: JO\Security\Authenticator\IPasswordGenerator
+			factory: JO\Security\Authenticator\PasswordGenerator()
+
+		syslogger: \Nette\Diagnostics\Logger
+
+	factories:
+
+
+production < common:
+
+development < common:

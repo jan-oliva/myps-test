@@ -1,0 +1,12 @@
+{block head}
+
+{/block}
+
+{block content}
+<h1 n:block=title>{_"domovská stránka"}</h1>
+
+<a n:if="$allowUsersLink" href="{plink  Users:Users:list}">{_"uživatelé"}</a><br />
+<a n:if="$isLoggedIn === false" href="{plink  Users:Sign:in}">{_"přhlášení"}</a>
+<br />
+{control skypeStatus}
+{/block}

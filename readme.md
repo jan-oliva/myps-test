@@ -1,4 +1,4 @@
-Zprovoznění
+#Zprovoznění
 
 #1. php CLI (console) (OS Debian)
 
@@ -12,23 +12,23 @@ struktura DB pomoci Doctrine console
 cd src/console/doctrine
 sudo -u www-data php doctrine.php orm:schema-tool:create
 
-#zakladni data - user,role, resources ACL
+zakladni data - user,role, resources ACL
 cd src/console/build
 sudo -u www-data php role.php
 
-2. phing CLI console (OS Debian)
+#2. phing CLI console (OS Debian)
 
 konfigurace src/app/config/config.neon
 konfigurace src/console/config/config.neon
 
 konfigurace phing  build.properties
 
-#struktura DB pomoci Doctrine console
+**struktura DB pomoci Doctrine console
 phing orm-create-schema
 cd src/console/build
 sudo -u www-data php role.php
 
-3. spusteni vyvojoveho prostredi pomocí vagrant a virtual box
+#3. spusteni vyvojoveho prostredi pomocí vagrant a virtual box
 
 Vagrant se staví virtuální stroj na Virtualboxu.
 Na něm je pak kompletní vývojové prostředí.
@@ -37,18 +37,18 @@ konfigurace src/app/config/config.neon
 konfigurace src/console/config/config.neon
 konfigurace phing  build.properties
 
-#prechod do rootu projektu
+** prechod do rootu projektu
 cd project dir
-#sestaveni stroje s OS Debian vcetne apache, mysql vcetne usera a zalozeni DB,  zkopirovani projektu na virtual do /home/vagrant/project
+** sestaveni stroje s OS Debian vcetne apache, mysql vcetne usera a zalozeni DB,  zkopirovani projektu na virtual do /home/vagrant/project
 vagrant up
 vagrant ssh #plati pro Linux na win pouzit napr. putty, user vagrant, heslo vagrant
 
-#root dir projektu. Absolutní cesta je /home/vagrant/project
+** root dir projektu. Absolutní cesta je /home/vagrant/project
 cd project
 #struktura DB pomoci Doctrine console
 phing orm-create-schema
 
-#zavedeni výchozích rolí a uživatelů
+** zavedeni výchozích rolí a uživatelů
 cd src/console/build
 sudo -u www-data php role.php
 
@@ -56,7 +56,7 @@ Stroj je na pristupny na adrese 10.99.0.204
 www - http://10.99.0.204
 utils - http://10.99.0.204:8080 - mysql adminer apod.
 
-nastaveni Netbeans
+#nastaveni Netbeans
 
 project  / propreties / Run configuration
 

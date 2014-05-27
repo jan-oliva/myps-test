@@ -1,6 +1,6 @@
 Zprovoznění
 
-1. php CLI (console) (OS Debian)
+#1. php CLI (console) (OS Debian)
 
 composer install
 
@@ -8,7 +8,7 @@ zalozeni  DB a a uzivatele
 konfigurace src/console/config/config.neon
 konfigurace src/app/config/config.neon
 
-#struktura DB pomoci Doctrine console
+struktura DB pomoci Doctrine console
 cd src/console/doctrine
 sudo -u www-data php doctrine.php orm:schema-tool:create
 

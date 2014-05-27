@@ -33,6 +33,7 @@ konfigurace src/app/config/config.neon
 konfigurace src/console/config/config.neon
 
 konfigurace phing  build.properties
+```
 
 **struktura DB pomoci Doctrine console
 phing orm-create-schema
@@ -40,6 +41,7 @@ phing orm-create-schema
 cd src/console/build
 
 sudo -u www-data php role.php
+```
 
 #3. spusteni vyvojoveho prostredi pomocí vagrant a virtual box
 
@@ -52,6 +54,7 @@ konfigurace src/console/config/config.neon
 
 konfigurace phing  build.properties
 
+```
 ** prechod do rootu projektu
 cd project dir
 ** sestaveni stroje s OS Debian vcetne apache, mysql vcetne usera a zalozeni DB,  zkopirovani projektu na virtual do /home/vagrant/project
@@ -70,6 +73,7 @@ phing orm-create-schema
 cd src/console/build
 
 sudo -u www-data php role.php
+```
 
 Stroj je na pristupny na adrese 10.99.0.204
 www - http://10.99.0.204

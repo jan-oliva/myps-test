@@ -4,7 +4,7 @@
 
 #1. pomocí php CLI (console) (OS Debian)
 
-composer install
+_composer install
 
 zalozeni  DB a a uzivatele
 

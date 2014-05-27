@@ -12,12 +12,16 @@ konfigurace src/console/config/config.neon
 
 konfigurace src/app/config/config.neon
 
-struktura DB pomoci Doctrine console
+** struktura DB pomoci Doctrine console
+
 cd src/console/doctrine
+
 sudo -u www-data php doctrine.php orm:schema-tool:create
 
-zakladni data - user,role, resources ACL
+** zakladni data - user,role, resources ACL
+
 cd src/console/build
+
 sudo -u www-data php role.php
 
 #2. pomocí phing CLI console (OS Debian)

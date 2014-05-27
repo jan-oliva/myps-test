@@ -1,3 +1,17 @@
+#Popis
+
+Vlastní projekt je v src/app/TestModule
+
+src/app/TestModule/config/contact.yml - konfigurace kompoenty ukazatele stavu skype
+
+src/console - konzolové PHP CLI skripty
+
+src/libs - moje knihovny a rozšíření
+
+src/vendor - slozka sestavená composerem
+
+src/app/entity - Entity Doctrine ORM (Kdyby)
+
 #Zprovoznění
 
 

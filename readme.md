@@ -4,14 +4,16 @@
 
 #1. pomocí php CLI (console) (OS Debian)
 
-```
-composer install
-
-zalozeni  DB a a uzivatele
+Ruční zalozeni  DB a a uzivatele
 
 konfigurace src/console/config/config.neon
 
 konfigurace src/app/config/config.neon
+
+
+```
+composer install
+
 
 ** struktura DB pomoci Doctrine console
 
@@ -28,6 +30,7 @@ sudo -u www-data php role.php
 
 #2. pomocí phing CLI console (OS Debian)
 
+Ruční zalozeni  DB a a uzivatele
 konfigurace src/app/config/config.neon
 
 konfigurace src/console/config/config.neon
@@ -45,7 +48,7 @@ sudo -u www-data php role.php
 
 #3. spusteni vyvojoveho prostredi pomocí vagrant a virtual box
 
-Vagrant se staví virtuální stroj na Virtualboxu.
+Vagrant sestaví virtuální stroj na Virtualboxu.
 Na něm je pak kompletní vývojové prostředí.
 
 konfigurace src/app/config/config.neon
@@ -76,7 +79,9 @@ sudo -u www-data php role.php
 ```
 
 Stroj je na pristupny na adrese 10.99.0.204
+
 www - http://10.99.0.204
+
 utils - http://10.99.0.204:8080 - mysql adminer apod.
 
 #Nastaveni Netbeans

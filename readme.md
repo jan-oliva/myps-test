@@ -4,7 +4,7 @@
 
 #1. pomocí php CLI (console) (OS Debian)
 
-_composer install
+```composer install
 
 zalozeni  DB a a uzivatele
 
@@ -23,6 +23,7 @@ sudo -u www-data php doctrine.php orm:schema-tool:create
 cd src/console/build
 
 sudo -u www-data php role.php
+```
 
 #2. pomocí phing CLI console (OS Debian)
 

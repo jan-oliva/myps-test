@@ -1,6 +1,8 @@
 #Zprovoznění
 
-#1. php CLI (console) (OS Debian)
+
+
+#1. pomocí php CLI (console) (OS Debian)
 
 composer install
 
@@ -16,7 +18,7 @@ zakladni data - user,role, resources ACL
 cd src/console/build
 sudo -u www-data php role.php
 
-#2. phing CLI console (OS Debian)
+#2. pomocí phing CLI console (OS Debian)
 
 konfigurace src/app/config/config.neon
 konfigurace src/console/config/config.neon

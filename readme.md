@@ -7,7 +7,9 @@
 composer install
 
 zalozeni  DB a a uzivatele
+
 konfigurace src/console/config/config.neon
+
 konfigurace src/app/config/config.neon
 
 struktura DB pomoci Doctrine console
@@ -21,13 +23,16 @@ sudo -u www-data php role.php
 #2. pomocí phing CLI console (OS Debian)
 
 konfigurace src/app/config/config.neon
+
 konfigurace src/console/config/config.neon
 
 konfigurace phing  build.properties
 
 **struktura DB pomoci Doctrine console
 phing orm-create-schema
+
 cd src/console/build
+
 sudo -u www-data php role.php
 
 #3. spusteni vyvojoveho prostredi pomocí vagrant a virtual box
